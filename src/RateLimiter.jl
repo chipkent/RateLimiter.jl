@@ -2,26 +2,39 @@ module RateLimiter
 
 using Dates
 
-export AbstractRateLimiter, wait!, @rate_limit, NoLimitRateLimiter, TokenBucketRateLimiter
+export AbstractRateLimiter, @rate_limit, NoLimitRateLimiter, TokenBucketRateLimiter
 
 #TODO: should the Manifest be committed?
-#TODO: add exports
-#TODO: document
-#TODO: unit test
 
+""" Abstract base type for all rate limiters. """
 abstract type AbstractRateLimiter end
 
-wait!(limiter::AbstractRateLimiter, cost::Float64) = error("Function is not defined for AbstractRateLimiter: type=$(typeof(limiter)) function=wait!")
 
-# #TODO: replace with an @rate_limit macro?
-# function execute(limiter::AbstractRateLimiter, cost::Float64, f::Function)
-#     wait!(limiter, cost)
-#     return f()
-# end
+"""
+    !(limiter, cost::T) where {T <: Real} 
 
+Wait until the method can be called again.  This method is thread safe.
+
+# Arguments
+- `limiter`: rate limiter
+- `cost`: cost of executing the method.
+"""
+wait!(limiter::AbstractRateLimiter, cost::T) where {T <: Real} = error("Function is not defined for AbstractRateLimiter: type=$(typeof(limiter)) function=wait!")
+
+
+"""
+    @rate_limit(limiter, cost, expr)
+
+A macro to limit the rate an expression can be called.
+
+# Arguments
+    - `limiter`: rate limiter
+    - `cost`: cost of executing the method.
+    - `expr`: expression to be evaluated    
+"""
 macro rate_limit(limiter, cost, expr)
     return esc(quote
-        wait!($limiter, $cost)
+        RateLimiter.wait!($limiter, $cost)
         $expr
     end)
 end
@@ -30,14 +43,32 @@ end
 #######################################################################        
 
 
+"""
+A rate limiter which does not limit the rate.
+"""
 struct NoLimitRateLimiter <: AbstractRateLimiter end
 
-wait!(limiter::NoLimitRateLimiter, cost::Float64) = return
+
+"""
+    !(limiter, cost::T) where {T <: Real} 
+
+Wait until the method can be called again.  This method is thread safe.
+
+# Arguments
+- `limiter`: rate limiter
+- `cost`: cost of executing the method.
+"""
+wait!(limiter::NoLimitRateLimiter, cost::T) where {T <: Real} = return
 
 
 #######################################################################        
 
 
+"""
+Token-Bucket rate limiter.  This limiter is used to control for constraints such as bandwidth and burstiness.
+
+See:  https://en.wikipedia.org/wiki/Token_bucket#Algorithm
+"""
 mutable struct TokenBucketRateLimiter <: AbstractRateLimiter
     tokens_per_second::Float64
     max_tokens::Float64
@@ -48,6 +79,18 @@ mutable struct TokenBucketRateLimiter <: AbstractRateLimiter
     tokens::Float64
 
     #TODO: argument ordering
+    #TODO: remove sleep seconds
+    """
+    Token-Bucket rate limiter.  This limiter is used to control for constraints such as bandwidth and burstiness.
+    
+    See:  https://en.wikipedia.org/wiki/Token_bucket#Algorithm
+ 
+    # Arguments
+    - `tokens_per_second`: number of tokens added per second.
+    - `max_tokens`: maximum number of tokens.
+    - `initial_tokens`: initial number of tokens.
+    - `sleep_seconds`: number of seconds to sleep before checking to see if execution is possible.
+    """
     function TokenBucketRateLimiter(tokens_per_second, max_tokens, initial_tokens, sleep_seconds) 
         tokens_per_second <= 0 && error("tokens_per_second must be positive: tokens_per_second=$tokens_per_second")
         max_tokens <= 0 && error("max_tokens must be positive: max_tokens=$max_tokens")
@@ -57,7 +100,16 @@ mutable struct TokenBucketRateLimiter <: AbstractRateLimiter
 end
 
 
-function wait!(limiter::TokenBucketRateLimiter, cost::Float64)
+"""
+    !(limiter, cost::T) where {T <: Real} 
+
+Wait until the method can be called again.  This method is thread safe.
+
+# Arguments
+- `limiter`: rate limiter
+- `cost`: cost of executing the method.
+"""
+function wait!(limiter::TokenBucketRateLimiter, cost::T) where {T <: Real}
     # error check
     cost < 0 && error("Cost must be greater than zero: cost=$cost")
     cost > limiter.max_tokens && error("Cost must be less than the max number of tokens: cost=$cost max_tokens=$(limiter.max_tokens)")
