@@ -72,14 +72,11 @@ See:  https://en.wikipedia.org/wiki/Token_bucket#Algorithm
 mutable struct TokenBucketRateLimiter <: AbstractRateLimiter
     tokens_per_second::Float64
     max_tokens::Float64
-    sleep_seconds::Float64
     lock::ReentrantLock
 
     last_update::DateTime
     tokens::Float64
 
-    #TODO: argument ordering
-    #TODO: remove sleep seconds
     """
     Token-Bucket rate limiter.  This limiter is used to control for constraints such as bandwidth and burstiness.
     
@@ -91,11 +88,10 @@ mutable struct TokenBucketRateLimiter <: AbstractRateLimiter
     - `initial_tokens`: initial number of tokens.
     - `sleep_seconds`: number of seconds to sleep before checking to see if execution is possible.
     """
-    function TokenBucketRateLimiter(tokens_per_second, max_tokens, initial_tokens, sleep_seconds) 
+    function TokenBucketRateLimiter(tokens_per_second, max_tokens, initial_tokens) 
         tokens_per_second <= 0 && error("tokens_per_second must be positive: tokens_per_second=$tokens_per_second")
         max_tokens <= 0 && error("max_tokens must be positive: max_tokens=$max_tokens")
-        sleep_seconds < 0 && error("sleep_seconds must be at least zero: sleep_seconds=$sleep_seconds")
-        return new(tokens_per_second, max_tokens, sleep_seconds, ReentrantLock(), now(), initial_tokens)
+        return new(tokens_per_second, max_tokens, ReentrantLock(), now(), initial_tokens)
     end
 end
 
@@ -128,7 +124,7 @@ function wait!(limiter::TokenBucketRateLimiter, cost::T) where {T <: Real}
             end
     
             # retry
-            sleep(limiter.sleep_seconds)
+            sleep((cost-limiter.tokens)/limiter.tokens_per_second)
         end
     end
 end
