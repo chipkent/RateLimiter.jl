@@ -1,0 +1,7 @@
+name = "RateLimiter"
+uuid = "24b76ae0-009b-4410-993f-7a05b90d7239"
+authors = ["David R. (Chip) Kent IV <chipkent@cecropiacapital.com>"]
+version = "0.1.0"
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
