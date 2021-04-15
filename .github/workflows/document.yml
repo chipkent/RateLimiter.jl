@@ -1,4 +1,9 @@
 # https://github.com/marketplace/actions/deploy-package-documentation
+#
+# You need DOCUMENTER_KEY for deployement, which you can generate using DocumenterTools:
+#
+# julia> using DocumenterTools, YourPackage
+# julia> DocumenterTools.genkeys(YourPackage)
 
 name: Documenter
 on:
