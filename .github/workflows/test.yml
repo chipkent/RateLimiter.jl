@@ -1,6 +1,6 @@
 # https://github.com/marketplace/actions/run-julia-package-tests
 
-name: Run tests
+name: Run Tests
 
 on: [push, pull_request]
 
