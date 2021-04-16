@@ -34,8 +34,8 @@ initial_tokens = 0
 
 dt = time_exec(TokenBucketRateLimiter(tokens_per_second, max_tokens, initial_tokens), 1, 1000)
 println("TokenBucket: dt(1)=$dt")
-@assert dt > 9.9
+@assert dt > 9.8
 
 dt = time_exec(TokenBucketRateLimiter(tokens_per_second, max_tokens, initial_tokens), 2, 1000)
 println("TokenBucket: dt(2)=$dt")
-@assert dt > 19.9
+@assert dt > 19.8
