@@ -1,0 +1,25 @@
+# Package must have version compatibility set
+# https://github.com/JuliaRegistries/General/blob/master/README.md
+# https://github.com/JuliaRegistries/CompatHelper.jl
+# https://juliaregistries.github.io/CompatHelper.jl/dev/
+
+
+name: CompatHelper
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  CompatHelper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: 1
+      - uses: julia-actions/julia-buildpkg@latest
+      - run: julia --color=yes -e 'import Pkg; Pkg.add("CompatHelper")'
+      - run: julia --color=yes -e 'import CompatHelper; CompatHelper.main()'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPATHELPER_PRIV: ${{ secrets.DOCUMENTER_KEY }}
