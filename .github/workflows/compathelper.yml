@@ -5,10 +5,12 @@
 
 
 name: CompatHelper
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
 jobs:
   CompatHelper:
     runs-on: ubuntu-latest
@@ -18,8 +20,9 @@ jobs:
         with:
           version: 1
       - uses: julia-actions/julia-buildpkg@latest
-      - run: julia --color=yes -e 'import Pkg; Pkg.add("CompatHelper")'
-      - run: julia --color=yes -e 'import CompatHelper; CompatHelper.main()'
+      - name: Pkg.add("CompatHelper")
+        run: julia  --color=yes -e 'using Pkg; Pkg.add("CompatHelper")'
+      - name: CompatHelper.main()
+        run: julia  --color=yes -e 'using CompatHelper; CompatHelper.main()'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMPATHELPER_PRIV: ${{ secrets.DOCUMENTER_KEY }}
