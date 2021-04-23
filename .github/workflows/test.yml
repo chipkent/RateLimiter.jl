@@ -1,3 +1,6 @@
+#
+# Run unit tests.
+#
 # https://github.com/marketplace/actions/run-julia-package-tests
 
 name: Run Tests
@@ -6,6 +9,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   test:

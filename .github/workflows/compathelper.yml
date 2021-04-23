@@ -1,4 +1,6 @@
-# Package must have version compatibility set
+#
+# Package must have version compatibility set before it can be registered.
+#
 # https://github.com/JuliaRegistries/General/blob/master/README.md
 # https://github.com/JuliaRegistries/CompatHelper.jl
 # https://juliaregistries.github.io/CompatHelper.jl/dev/
@@ -10,6 +12,7 @@ on:
   schedule:
     - cron: 0 0 * * *
   workflow_dispatch:
+
 jobs:
   CompatHelper:
     runs-on: ubuntu-latest
