@@ -1,3 +1,9 @@
+![Test](https://github.com/chipkent/RateLimiter.jl/actions/workflows/test.yml/badge.svg)
+![Register](https://github.com/chipkent/RateLimiter.jl/actions/workflows/register.yml/badge.svg)
+![Document](https://github.com/chipkent/RateLimiter.jl/actions/workflows/document.yml/badge.svg)
+![Compat Helper](https://github.com/chipkent/RateLimiter.jl/actions/workflows/compathelper.yml/badge.svg)
+![Tagbot](https://github.com/chipkent/RateLimiter.jl/actions/workflows/tagbot.yml/badge.svg)
+
 # RateLimiter.jl
 Julia package for limiting the rate at which expressions are evaluated.  This can be
 useful for rate limiting access to network resources (e.g. websites).  All methods are
