@@ -10,7 +10,9 @@
 #
 # The output of this command will contain both keys as well as instructions on deploying the keys.
 #
-# https://chipkent.github.io/RateLimiter.jl/dev/
+# NOTE: GitHub pages must be enabled in the project settings.
+#
+# URL is usually https://USERNAME.github.io/PROJECT/dev/.
 
 name: Documenter
 on:
