@@ -10,7 +10,7 @@
 #
 # The output of this command will contain both keys as well as instructions on deploying the keys.
 #
-# https://chipkent.github.io/RateLimiter.jl/main/
+# https://chipkent.github.io/RateLimiter.jl/dev/
 
 name: Documenter
 on:

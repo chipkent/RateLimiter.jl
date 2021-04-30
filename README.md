@@ -42,6 +42,6 @@ println("RESULT: $result")
 
 ## Documentation
 
-See [https://chipkent.github.io/RateLimiter.jl/main/](https://chipkent.github.io/RateLimiter.jl/main/).
+See [https://chipkent.github.io/RateLimiter.jl/dev/](https://chipkent.github.io/RateLimiter.jl/dev/).
 
 Pull requests will publish documentation to <code>https://chipkent.github.io/RateLimiter.jl/previews/PR##</code>.
