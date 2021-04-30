@@ -1,11 +1,15 @@
 
 using Documenter, RateLimiter
 
-makedocs(sitename="RateLimiter.jl", modules = [RateLimiter])
+makedocs(
+    modules = [RateLimiter],
+    sitename="RateLimiter.jl", 
+    authors = "Chip Kent",
+    format = Documenter.HTML(),
+)
 
 deploydocs(
     repo = "github.com/chipkent/RateLimiter.jl.git", 
     devbranch = "main",
-    devurl = "main",
-    versions = ["stable" => "v^", "v#.#", "main" => "main"],
+    push_preview = true,
 )

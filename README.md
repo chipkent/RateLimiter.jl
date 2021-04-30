@@ -39,3 +39,9 @@ end
 
 println("RESULT: $result")
 ```
+
+## Documentation
+
+See [https://chipkent.github.io/RateLimiter.jl/main/](https://chipkent.github.io/RateLimiter.jl/main/).
+
+Pull requests will publish documentation to <code>https://chipkent.github.io/RateLimiter.jl/previews/PR##</code>.
