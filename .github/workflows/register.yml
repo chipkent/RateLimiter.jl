@@ -1,6 +1,7 @@
 #
 # Register the package in the official Julia repository.
 #
+# Follow the directions here:  https://github.com/JuliaRegistries/Registrator.jl
 
 name: Register Package
 on:
